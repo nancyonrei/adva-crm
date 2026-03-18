@@ -109,6 +109,7 @@
   .mp-card.active-card { border-color: var(--navy); }
   .mp-card:hover { border-color: var(--navy); box-shadow: var(--shadow-md); transform: translateY(-1px); }
   .mp-card.status-paused::before { background: var(--gray); }
+  .status-deployed::before { background: var(--amber); }
   .mp-card.status-active::before { background: var(--orange); }
 
   .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
@@ -362,7 +363,7 @@
         <div class="form-group">
           <label>Availability Status</label>
           <select id="f-status">
-            <option value="active">Active   Available</option>
+            <option value="active">Active - Available</option>
             <option value="deployed">Fully Deployed</option>
             <option value="paused">Paused</option>
           </select>
