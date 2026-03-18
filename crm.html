@@ -326,7 +326,7 @@
 
 <!-- MAIN APP -->
 <div id="app" style="display:none">
-<div id="debug-bar" style="background:#2C2C2C;color:white;font-size:12px;padding:6px 16px;display:flex;gap:12px;align-items:center"><span id="debug-msg">🔄 Connecting to database...</span><button onclick="document.getElementById('debug-bar').style.display='none'" style="background:none;border:none;color:white;cursor:pointer;margin-left:auto">✕</button></div>
+
   <div class="header">
     <div class="logo">🏠 <span>ADVA</span> Leads CRM</div>
     <div class="header-right">
@@ -1017,7 +1017,6 @@ async function init() {
     return;
   }
   document.getElementById('app').style.display = 'block';
-  document.getElementById('debug-msg').textContent = '🔄 Connecting to Supabase...';
   try {
     await ensureTables();
     await loadAll();
@@ -1038,15 +1037,9 @@ async function connectSupabase() {
   localStorage.setItem('supa_key', key);
   document.getElementById('setup-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
-  try {
-    await ensureTables();
-    await loadAll();
-    subscribeRealtime();
-    const db = document.getElementById('debug-msg'); if(db) db.textContent = '✅ Connected and live';
-    setTimeout(()=>{ const bar=document.getElementById('debug-bar'); if(bar) bar.style.display='none'; }, 3000);
-  } catch(e) {
-    const db = document.getElementById('debug-msg'); if(db) db.textContent = '❌ Error: '+e.message;
-  }
+  await ensureTables();
+  await loadAll();
+  subscribeRealtime();
 }
 
 function showSetupError(msg) {
@@ -1853,11 +1846,7 @@ function getLetterBody(type, p, contactType) {
   const fcDate = p.foreclosure_date ? fmtD(p.foreclosure_date) : null;
   const auctionDate = p.auction_date ? fmtD(p.auction_date) : null;
 
-  const sig = `Warmly,
-
-Nancy ${SENDER.lastInitial}.
-${SENDER.phone}${SENDER.email ? '
-'+SENDER.email : ''}`;
+  const sig = "Warmly,\n\nNancy " + SENDER.lastInitial + ".\n" + SENDER.phone + (SENDER.email ? "\n" + SENDER.email : "");
 
   const dateNote = probateDate ? `
 I also understand the probate filing is set for ${probateDate}, and I want to be respectful of the time-sensitive nature of your situation.` 
