@@ -155,7 +155,11 @@
   .info-val.green { color: var(--green); }
 
   /* DEAL LOG */
-  .deal-entry { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .check-chip { display:inline-flex;align-items:center;gap:5px;font-size:13px;cursor:pointer;background:var(--gray-light);padding:5px 11px;border-radius:6px;border:1px solid var(--border);font-weight:400;text-transform:none;letter-spacing:0;transition:all .12s; }
+  .check-chip:has(input:checked) { background:var(--orange-light);border-color:var(--orange);color:var(--orange-dark); }
+  .check-chip input[type=checkbox] { width:13px;height:13px;accent-color:var(--orange);cursor:pointer; }
+
+    .deal-entry { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
   .deal-entry:last-child { border-bottom: none; }
   .deal-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); margin-top: 5px; flex-shrink: 0; }
   .deal-amount { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; color: var(--navy); min-width: 90px; }
@@ -259,7 +263,11 @@
         <option value="jv">JV Partner</option>
         <option value="equity">Equity Partner</option>
         <option value="loc">Line of Credit</option>
-        <option value="roth">Roth/IRA/Life Insurance</option>
+        <option value="roth">Roth IRA</option>
+        <option value="ira">Traditional IRA</option>
+        <option value="lifeins">Life Insurance</option>
+        <option value="cash">Cash Investor</option>
+        <option value="401k">401k</option>
       </select>
       <select class="filter-select" id="filter-status" onchange="renderAll()">
         <option value="">All statuses</option>
@@ -349,16 +357,21 @@
 
       <div class="section-label">Partner Type & Status</div>
       <div class="form-row">
-        <div class="form-group">
-          <label>Partner Type</label>
-          <select id="f-type">
-            <option value="private">Private Lender</option>
-            <option value="hard">Hard Money Lender</option>
-            <option value="jv">JV Partner</option>
-            <option value="equity">Equity Partner</option>
-            <option value="loc">Line of Credit</option>
-            <option value="roth">Roth / IRA / Life Insurance / Cash</option>
-          </select>
+        <div class="form-group" style="grid-column:1/-1">
+          <label>Partner Type (select all that apply)</label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px" id="partner-type-checks">
+            <label class="check-chip"><input type="checkbox" value="private" class="f-ptype"> Private Lender</label>
+            <label class="check-chip"><input type="checkbox" value="hard" class="f-ptype"> Hard Money</label>
+            <label class="check-chip"><input type="checkbox" value="jv" class="f-ptype"> JV Partner</label>
+            <label class="check-chip"><input type="checkbox" value="equity" class="f-ptype"> Equity Partner</label>
+            <label class="check-chip"><input type="checkbox" value="loc" class="f-ptype"> Line of Credit</label>
+            <label class="check-chip"><input type="checkbox" value="roth" class="f-ptype"> Roth IRA</label>
+            <label class="check-chip"><input type="checkbox" value="ira" class="f-ptype"> Traditional IRA</label>
+            <label class="check-chip"><input type="checkbox" value="lifeins" class="f-ptype"> Life Insurance</label>
+            <label class="check-chip"><input type="checkbox" value="cash" class="f-ptype"> Cash Investor</label>
+            <label class="check-chip"><input type="checkbox" value="401k" class="f-ptype"> 401k</label>
+            <label class="check-chip"><input type="checkbox" value="other" class="f-ptype"> Other</label>
+          </div>
         </div>
         <div class="form-group">
           <label>Availability Status</label>
@@ -389,13 +402,21 @@
       </div>
 
       <div class="section-label">Preferences</div>
-      <div class="form-group"><label>Asset Types They Fund</label>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px">
-          <label style="display:flex;align-items:center;gap:5px;font-size:13px;text-transform:none;letter-spacing:0;font-weight:400;cursor:pointer"><input type="checkbox" value="SFR" class="f-asset"> SFR</label>
-          <label style="display:flex;align-items:center;gap:5px;font-size:13px;text-transform:none;letter-spacing:0;font-weight:400;cursor:pointer"><input type="checkbox" value="Multi" class="f-asset"> Multi-family</label>
-          <label style="display:flex;align-items:center;gap:5px;font-size:13px;text-transform:none;letter-spacing:0;font-weight:400;cursor:pointer"><input type="checkbox" value="Commercial" class="f-asset"> Commercial</label>
-          <label style="display:flex;align-items:center;gap:5px;font-size:13px;text-transform:none;letter-spacing:0;font-weight:400;cursor:pointer"><input type="checkbox" value="Land" class="f-asset"> Land</label>
-          <label style="display:flex;align-items:center;gap:5px;font-size:13px;text-transform:none;letter-spacing:0;font-weight:400;cursor:pointer"><input type="checkbox" value="Any" class="f-asset"> Any</label>
+      <div class="form-group">
+        <label>Asset Types They Fund</label>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
+          <label class="check-chip"><input type="checkbox" value="SFR" class="f-asset"> SFR</label>
+          <label class="check-chip"><input type="checkbox" value="Multi" class="f-asset"> Multi-family</label>
+          <label class="check-chip"><input type="checkbox" value="Commercial" class="f-asset"> Commercial</label>
+          <label class="check-chip"><input type="checkbox" value="Land" class="f-asset"> Land</label>
+          <label class="check-chip"><input type="checkbox" value="Flip" class="f-asset"> Fix &amp; Flip</label>
+          <label class="check-chip"><input type="checkbox" value="LeaseOption" class="f-asset"> Lease Option</label>
+          <label class="check-chip"><input type="checkbox" value="BuyHold" class="f-asset"> Buy &amp; Hold</label>
+          <label class="check-chip"><input type="checkbox" value="MobileHome" class="f-asset"> Mobile Home</label>
+          <label class="check-chip"><input type="checkbox" value="Any" class="f-asset"> Any</label>
+        </div>
+        <div style="margin-top:8px">
+          <input type="text" id="f-asset-custom" placeholder="Type in other asset type (e.g. Mixed Use, Industrial)" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:13px;background:var(--white);color:var(--charcoal)">
         </div>
       </div>
       <div class="form-group"><label>Target Locations / Markets</label><input type="text" id="f-locations" placeholder="e.g. LA County, Inland Empire, 91016"></div>
@@ -520,7 +541,21 @@ function updateStats() {
   document.getElementById('s-deals').textContent = totalDeals;
 }
 
-const TYPE_LABELS = { private:'Private Lender', hard:'Hard Money', jv:'JV Partner', equity:'Equity Partner', loc:'Line of Credit', roth:'Roth/IRA/Life Ins.' };
+const TYPE_LABELS = { 
+  private:'Private Lender', hard:'Hard Money', jv:'JV Partner', 
+  equity:'Equity Partner', loc:'Line of Credit', roth:'Roth IRA',
+  ira:'Traditional IRA', lifeins:'Life Insurance', cash:'Cash Investor',
+  '401k':'401k', other:'Other'
+};
+function getTypeChips(p) {
+  const types = p.partner_types && p.partner_types.length ? p.partner_types : [p.partner_type||'private'];
+  const chipColors = {
+    private:'chip-private', hard:'chip-hard', jv:'chip-jv', equity:'chip-equity',
+    loc:'chip-loc', roth:'chip-roth', ira:'chip-roth', lifeins:'chip-roth',
+    cash:'chip-private', '401k':'chip-roth', other:'chip-loc'
+  };
+  return types.map(t=>`<span class="type-chip ${chipColors[t]||'chip-loc'}">${TYPE_LABELS[t]||t}</span>`).join(' ');
+}
 const STATUS_LABELS = { active:'Active', paused:'Paused', deployed:'Fully Deployed' };
 
 function partnerCardHTML(p) {
@@ -534,7 +569,7 @@ function partnerCardHTML(p) {
       </div>
       <span class="status-badge status-${p.availability||'active'}">${STATUS_LABELS[p.availability]||'Active'}</span>
     </div>
-    <span class="type-chip chip-${p.partner_type||'private'}">${TYPE_LABELS[p.partner_type]||p.partner_type}</span>
+    ${getTypeChips(p)}
     <div class="capital-display">${fmt$(p.capital_available)}</div>
     <div style="font-size:11px;color:var(--gray);margin-bottom:8px">available${p.total_capital?' of '+fmt$(p.total_capital):''}</div>
     ${p.interest_rate||p.points?`<div style="font-size:12px;font-weight:600;color:var(--charcoal);margin-bottom:4px">${p.interest_rate?p.interest_rate+'% ':''} ${p.points?p.points+' pts':''} ${p.term_length?'  '+p.term_length:''}</div>`:''}
@@ -552,7 +587,8 @@ function renderAll() {
   const fs = document.getElementById('filter-status').value;
   let list = partners.filter(p => {
     const txt = [p.name,p.company,p.city,p.locations,p.notes,p.invest_type].join(' ').toLowerCase();
-    return (!q||txt.includes(q)) && (!ft||p.partner_type===ft) && (!fs||p.availability===fs);
+    const ptypes = p.partner_types && p.partner_types.length ? p.partner_types : [p.partner_type||'private'];
+    return (!q||txt.includes(q)) && (!ft||ptypes.includes(ft)) && (!fs||p.availability===fs);
   });
   const grid = document.getElementById('all-grid');
   grid.innerHTML = list.length ? list.map(partnerCardHTML).join('') :
@@ -631,7 +667,7 @@ function renderPanel(id) {
         </div>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <span class="type-chip chip-${p.partner_type||'private'}">${TYPE_LABELS[p.partner_type]||''}</span>
+        ${getTypeChips(p)}
         <span class="status-badge status-${p.availability||'active'}">${STATUS_LABELS[p.availability]||'Active'}</span>
       </div>
     </div>
@@ -711,7 +747,8 @@ function openAddModal() {
   ['f-name','f-company','f-phone','f-email','f-address','f-city','f-state','f-capital','f-total-capital','f-minsize','f-maxsize','f-rate','f-points','f-term','f-invest-type','f-locations','f-notes'].forEach(id=>{
     const el = document.getElementById(id); if(el) el.value='';
   });
-  document.getElementById('f-type').value='private';
+  document.querySelectorAll('.f-ptype').forEach(cb=>cb.checked=false);
+  const fac = document.getElementById('f-asset-custom'); if(fac) fac.value='';
   document.getElementById('f-status').value='active';
   document.querySelectorAll('.f-asset').forEach(cb=>cb.checked=false);
   document.getElementById('add-modal').classList.add('open');
@@ -748,9 +785,11 @@ function openEditModal(id) {
   document.getElementById('f-invest-type').value=p.invest_type||'';
   document.getElementById('f-locations').value=p.locations||'';
   document.getElementById('f-notes').value=p.notes||'';
-  document.getElementById('f-type').value=p.partner_type||'private';
+  const ptypes = p.partner_types||[p.partner_type||'private'];
+  document.querySelectorAll('.f-ptype').forEach(cb=>{ cb.checked=ptypes.includes(cb.value); });
   document.getElementById('f-status').value=p.availability||'active';
   document.querySelectorAll('.f-asset').forEach(cb=>{ cb.checked=(p.asset_types||[]).includes(cb.value); });
+  const fac2 = document.getElementById('f-asset-custom'); if(fac2) fac2.value=p.asset_type_custom||'';
   document.getElementById('add-modal').classList.add('open');
 }
 
@@ -782,23 +821,30 @@ async function savePartner() {
     invest_type: document.getElementById('f-invest-type').value.trim()||null,
     locations: document.getElementById('f-locations').value.trim()||null,
     notes: document.getElementById('f-notes').value.trim()||null,
-    partner_type: document.getElementById('f-type').value,
+    partner_types: Array.from(document.querySelectorAll('.f-ptype:checked')).map(cb=>cb.value),
+    partner_type: Array.from(document.querySelectorAll('.f-ptype:checked')).map(cb=>cb.value)[0]||'private',
     availability: document.getElementById('f-status').value,
-    asset_types: assets
+    asset_types: assets,
+    asset_type_custom: document.getElementById('f-asset-custom').value.trim()||null
   };
   setSyncStatus('syncing','Saving...');
   if (editId) {
-    await supa(`money_partners?id=eq.${editId}`, { method:'PATCH', body:data, prefer:'return=minimal' });
+    const patchRes = await supa(`money_partners?id=eq.${editId}`, { method:'PATCH', body:data, prefer:'return=representation' });
+    console.log('PATCH result:', patchRes);
+    if (!patchRes) { alert('Save failed - check console for errors'); return; }
   } else {
     data.deals = []; data.comm_log = [];
-    await supa('money_partners', { method:'POST', body:data });
+    const postRes = await supa('money_partners', { method:'POST', body:data });
+    console.log('POST result:', postRes);
   }
+  const savedEditId = editId;
   closeModal('add-modal');
+  editId = null;
   const d = await supa('money_partners?order=created_at.desc');
   if (d) partners = d;
   refreshAll();
   setSyncStatus('on','Live sync on');
-  if (editId) { openDetail(editId); editId=null; }
+  if (savedEditId) { openDetail(savedEditId); }
 }
 
 async function deletePartner() {
