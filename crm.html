@@ -326,11 +326,9 @@
 
 <!-- MAIN APP -->
 <div id="app" style="display:none">
-
   <div class="header">
     <div class="logo">🏠 <span>ADVA</span> Leads CRM</div>
     <div class="header-right">
-      <a href="https://nancyonrei.github.io/adva-crm/money-partners.html" style="font-size:12px;color:var(--gray);text-decoration:none;border:1px solid var(--border);padding:5px 11px;border-radius:var(--radius);margin-right:4px" target="_blank">💰 Money Partners</a>
       <div class="sync-indicator">
         <div class="sync-dot" id="sync-dot"></div>
         <span id="sync-label">Connecting...</span>
@@ -773,9 +771,8 @@
     <h2 id="panel-title">Property Detail</h2>
     <div class="panel-head-btns">
       <button class="btn btn-outline btn-sm" onclick="openEditModal(activeId)">Edit</button>
-      <button class="btn btn-outline btn-sm" onclick="openSkipTrace(activeId)">Skip Trace</button>
-      <button class="btn btn-outline btn-sm" onclick="openLetterFromDetail(activeId)">Letter</button>
-      <button class="btn btn-outline btn-sm" onclick="openMatchFromDetail(activeId)">Match</button>
+      <button class="btn btn-outline btn-sm" onclick="openLetterFromDetail(activeId)">✉️ Letter</button>
+      <button class="btn btn-outline btn-sm" onclick="openMatchFromDetail(activeId)">🎯 Match</button>
       <button class="btn btn-danger btn-sm" onclick="deleteProperty()">Delete</button>
       <button class="btn btn-outline btn-sm" onclick="closeDetail()">✕</button>
     </div>
@@ -872,52 +869,6 @@
   <div id="buyer-panel-body"></div>
 </div>
 
-
-<!-- SKIP TRACE MODAL -->
-<div class="modal-wrap" id="skip-modal">
-  <div class="modal" style="max-width:600px">
-    <div class="modal-head">
-      <h2>Skip Trace</h2>
-      <button class="btn btn-outline btn-sm" onclick="closeModal('skip-modal')">X</button>
-    </div>
-    <div class="modal-body">
-      <div id="skip-prop-info" style="background:var(--gray-light);border-radius:var(--radius);padding:12px;margin-bottom:16px;font-size:13px"></div>
-      
-      <!-- Quick Links -->
-      <div class="panel-sec-title" style="margin-bottom:10px">One-click lookup services</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
-        <a id="st-batch" href="#" target="_blank" class="btn btn-outline" style="text-align:center;text-decoration:none;font-size:12px">BatchSkipTracing</a>
-        <a id="st-propstream" href="#" target="_blank" class="btn btn-outline" style="text-align:center;text-decoration:none;font-size:12px">PropStream</a>
-        <a id="st-beenverified" href="#" target="_blank" class="btn btn-outline" style="text-align:center;text-decoration:none;font-size:12px">BeenVerified</a>
-        <a id="st-whitepages" href="#" target="_blank" class="btn btn-outline" style="text-align:center;text-decoration:none;font-size:12px">Whitepages</a>
-        <a id="st-spokeo" href="#" target="_blank" class="btn btn-outline" style="text-align:center;text-decoration:none;font-size:12px">Spokeo</a>
-        <a id="st-fastpeoplesearch" href="#" target="_blank" class="btn btn-outline" style="text-align:center;text-decoration:none;font-size:12px">FastPeopleSearch</a>
-      </div>
-
-      <!-- County Records -->
-      <div class="panel-sec-title" style="margin-bottom:10px">Public records lookup</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
-        <a id="st-county" href="#" target="_blank" class="btn btn-outline" style="text-align:center;text-decoration:none;font-size:12px">County Assessor</a>
-        <a id="st-court" href="#" target="_blank" class="btn btn-outline" style="text-align:center;text-decoration:none;font-size:12px">Court Records</a>
-        <a id="st-google" href="#" target="_blank" class="btn btn-outline" style="text-align:center;text-decoration:none;font-size:12px">Google Search</a>
-        <a id="st-linkedin" href="#" target="_blank" class="btn btn-outline" style="text-align:center;text-decoration:none;font-size:12px">LinkedIn Search</a>
-      </div>
-
-      <!-- Manual entry results -->
-      <div class="panel-sec-title" style="margin-bottom:10px">Save skip trace results</div>
-      <div class="form-group"><label>Phone found</label><input type="text" id="st-phone" placeholder="(555) 000-0000"></div>
-      <div class="form-group"><label>Email found</label><input type="text" id="st-email" placeholder="owner@email.com"></div>
-      <div class="form-group"><label>Mailing address (if different)</label><input type="text" id="st-mailing" placeholder="123 Different St, City, CA 90001"></div>
-      <div class="form-group"><label>Relatives / associates found</label><input type="text" id="st-relatives" placeholder="Names of relatives or associates"></div>
-      <div class="form-group"><label>Notes from skip trace</label><textarea id="st-notes" rows="3" placeholder="Any additional info found during skip trace..."></textarea></div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn btn-outline" onclick="closeModal('skip-modal')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveSkipTrace()">Save Results</button>
-    </div>
-  </div>
-</div>
-
 <!-- ADD / EDIT MODAL -->
 <div class="modal-wrap" id="prop-modal">
   <div class="modal">
@@ -979,10 +930,6 @@
           <label>Next Follow-up</label>
           <input type="date" id="f-nextfu">
         </div>
-      </div>
-      <div class="form-group">
-        <label>Mailing Address (if different from property)</label>
-        <input type="text" id="f-mailing" placeholder="123 Main St, City, CA 90001">
       </div>
       <div class="form-group">
         <label>Notes / Skip Trace Results</label>
@@ -1068,15 +1015,9 @@ async function init() {
     return;
   }
   document.getElementById('app').style.display = 'block';
-  try {
-    await ensureTables();
-    await loadAll();
-    subscribeRealtime();
-    const db = document.getElementById('debug-msg'); if(db) db.textContent = '✅ Connected and live';
-    setTimeout(()=>{ const bar=document.getElementById('debug-bar'); if(bar) bar.style.display='none'; }, 3000);
-  } catch(e) {
-    const db = document.getElementById('debug-msg'); if(db) db.textContent = '❌ Error: '+e.message;
-  }
+  await ensureTables();
+  await loadAll();
+  subscribeRealtime();
 }
 
 async function connectSupabase() {
@@ -1477,10 +1418,8 @@ function renderDetailPanel(id) {
             ${p.phone?`<a href="tel:${p.phone}">${p.phone}</a>`:''}
             ${p.phone&&p.email?' · ':''}
             ${p.email?`<a href="mailto:${p.email}">${p.email}</a>`:''}
-            ${!p.phone&&!p.email?'No contact info yet — run skip trace':''}
+            ${!p.phone&&!p.email?'No contact info':''}
           </div>
-          ${p.mailing_address?`<div style="font-size:12px;color:var(--gray);margin-top:4px">Mail: ${p.mailing_address}</div>`:''}
-          ${p.skip_relatives?`<div style="font-size:12px;color:var(--gray);margin-top:2px">Relatives: ${p.skip_relatives}</div>`:''}
         </div>
       </div>
       <div class="badges" style="margin-top:12px">
@@ -1585,7 +1524,6 @@ async function saveProperty() {
     phone: document.getElementById('f-phone').value.trim()||null,
     email: document.getElementById('f-email').value.trim()||null,
     notes: document.getElementById('f-notes').value.trim()||null,
-      mailing_address: document.getElementById('f-mailing').value.trim()||null,
     status: document.getElementById('f-status').value,
     probate_date: document.getElementById('f-probate').value||null,
     foreclosure_date: document.getElementById('f-foreclosure').value||null,
@@ -1900,7 +1838,11 @@ function getLetterBody(type, p, contactType) {
   const fcDate = p.foreclosure_date ? fmtD(p.foreclosure_date) : null;
   const auctionDate = p.auction_date ? fmtD(p.auction_date) : null;
 
-  const sig = "Warmly,\n\nNancy " + SENDER.lastInitial + ".\n" + SENDER.phone + (SENDER.email ? "\n" + SENDER.email : "");
+  const sig = `Warmly,
+
+Nancy ${SENDER.lastInitial}.
+${SENDER.phone}${SENDER.email ? '
+'+SENDER.email : ''}`;
 
   const dateNote = probateDate ? `
 I also understand the probate filing is set for ${probateDate}, and I want to be respectful of the time-sensitive nature of your situation.` 
@@ -2101,93 +2043,6 @@ function downloadPDF() {
 }
 
 
-
-
-
-// ─────────────────────────────────────────────
-// SKIP TRACE
-// ─────────────────────────────────────────────
-let skipTargetId = null;
-
-function openSkipTrace(id) {
-  skipTargetId = id;
-  const p = props.find(x=>x.id===id);
-  if (!p) return;
-
-  const addr = encodeURIComponent(p.address||'');
-  const name = encodeURIComponent(p.owner_name||'');
-  const addrRaw = p.address||'';
-  const nameRaw = p.owner_name||'';
-
-  // Update prop info
-  document.getElementById('skip-prop-info').innerHTML = 
-    '<strong>' + (nameRaw||'Unknown owner') + '</strong> &nbsp;&middot;&nbsp; ' + addrRaw +
-    (p.phone ? '<br>Current phone: <strong>' + p.phone + '</strong>' : '') +
-    (p.email ? ' &nbsp;&middot;&nbsp; ' + p.email : '');
-
-  // Build service URLs
-  document.getElementById('st-batch').href = 'https://www.batchskiptracing.com';
-  document.getElementById('st-propstream').href = 'https://propstream.com';
-  document.getElementById('st-beenverified').href = 'https://www.beenverified.com/f/search/person?full_name=' + name;
-  document.getElementById('st-whitepages').href = 'https://www.whitepages.com/name/' + name.replace(/%20/g,'-');
-  document.getElementById('st-spokeo').href = 'https://www.spokeo.com/' + name.replace(/%20/g,'-');
-  document.getElementById('st-fastpeoplesearch').href = 'https://www.fastpeoplesearch.com/name/' + name.replace(/%20/g,'-');
-
-  // Parse city/state from address for county lookup
-  const parts = addrRaw.split(',').map(s=>s.trim());
-  const city = parts[1]||'';
-  const stateZip = parts[2]||'';
-  const state = stateZip.replace(/[0-9]/g,'').trim().toLowerCase();
-  
-  document.getElementById('st-county').href = 'https://www.google.com/search?q=' + encodeURIComponent(city + ' ' + state + ' county assessor property search ' + addrRaw);
-  document.getElementById('st-court').href = 'https://www.google.com/search?q=' + encodeURIComponent(city + ' ' + state + ' court records ' + (nameRaw||addrRaw));
-  document.getElementById('st-google').href = 'https://www.google.com/search?q=' + encodeURIComponent((nameRaw||'') + ' ' + addrRaw + ' owner contact');
-  document.getElementById('st-linkedin').href = 'https://www.linkedin.com/search/results/people/?keywords=' + name;
-
-  // Pre-fill existing data
-  document.getElementById('st-phone').value = p.phone||'';
-  document.getElementById('st-email').value = p.email||'';
-  document.getElementById('st-mailing').value = '';
-  document.getElementById('st-relatives').value = p.skip_relatives||'';
-  document.getElementById('st-notes').value = '';
-
-  document.getElementById('skip-modal').classList.add('open');
-}
-
-async function saveSkipTrace() {
-  const p = props.find(x=>x.id===skipTargetId);
-  if (!p) return;
-
-  const phone = document.getElementById('st-phone').value.trim();
-  const email = document.getElementById('st-email').value.trim();
-  const mailing = document.getElementById('st-mailing').value.trim();
-  const relatives = document.getElementById('st-relatives').value.trim();
-  const notes = document.getElementById('st-notes').value.trim();
-
-  const update = {};
-  if (phone) update.phone = phone;
-  if (email) update.email = email;
-  if (mailing) update.mailing_address = mailing;
-  if (relatives) update.skip_relatives = relatives;
-
-  // Add skip trace as follow-up log entry
-  const fus = [...(p.followups||[])];
-  const logParts = ['[Skip Trace completed]'];
-  if (phone) logParts.push('Phone: ' + phone);
-  if (email) logParts.push('Email: ' + email);
-  if (mailing) logParts.push('Mailing: ' + mailing);
-  if (relatives) logParts.push('Relatives: ' + relatives);
-  if (notes) logParts.push(notes);
-  fus.push({ date: todayStr(), note: logParts.join(' | ') });
-  update.followups = fus;
-
-  setSyncStatus('syncing', 'Saving...');
-  await supa('properties?id=eq.' + skipTargetId, { method:'PATCH', body:update, prefer:'return=minimal' });
-  closeModal('skip-modal');
-  await loadAll();
-  setSyncStatus('connected', 'Live sync on');
-  openDetail(skipTargetId);
-}
 
 
 // ─────────────────────────────────────────────
@@ -3253,12 +3108,12 @@ function applyTemplate(templateStr, p) {
 // ─────────────────────────────────────────────
 function switchTab(name) {
   document.querySelectorAll('.nav-tab').forEach((t,i)=>{
-    t.classList.toggle('active', ['leads','followup','events','partners','letters','buyers','settings'][i]===name);
+    t.classList.toggle('active', ['leads','geo','map','followup','events','partners','letters','buyers','settings'][i]===name);
   });
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
   if (name==='map') setTimeout(initMap, 100);
-  if (name==='settings') { loadMapKey(); loadSenderInfo(); loadTemplateEditor(); loadGsUrl(); }
+  if (name==='settings') { loadMapKey(); }
 }
 
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
