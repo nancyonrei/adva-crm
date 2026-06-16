@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { serverSupabase } from '@/lib/supabase-server'
+import { checkApiKey } from '@/lib/api-auth'
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const deny = checkApiKey(req)
+  if (deny) return deny
   const { id } = await params
   const db = serverSupabase()
   const { data, error } = await db.from('properties').update(await req.json()).eq('id', id).select().single()
@@ -9,7 +12,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   return NextResponse.json(data)
 }
 
-export async function DELETE(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const deny = checkApiKey(req)
+  if (deny) return deny
   const { id } = await params
   const db = serverSupabase()
   const { error } = await db.from('properties').delete().eq('id', id)
