@@ -1,0 +1,93 @@
+-- ============================================================
+-- ADVA CRM — Supabase Schema
+-- Run this in Supabase → SQL Editor to set up all tables
+-- ============================================================
+
+-- Partners (created first — properties references it)
+CREATE TABLE IF NOT EXISTS public.partners (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at timestamptz DEFAULT now() NOT NULL,
+  name text NOT NULL,
+  phone text,
+  email text,
+  role text
+);
+
+-- Properties (leads)
+CREATE TABLE IF NOT EXISTS public.properties (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at timestamptz DEFAULT now() NOT NULL,
+  address text NOT NULL,
+  owner_name text,
+  phone text,
+  email text,
+  notes text,
+  status text DEFAULT 'lead' CHECK (status IN ('lead','active','probate','foreclosure','auction')),
+  probate_date date,
+  foreclosure_date date,
+  auction_date date,
+  next_followup date,
+  partner_id uuid REFERENCES public.partners(id) ON DELETE SET NULL,
+  followups jsonb DEFAULT '[]',
+  docs jsonb DEFAULT '[]',
+  mailing_address text,
+  skip_relatives text
+);
+
+-- Buyers
+CREATE TABLE IF NOT EXISTS public.buyers (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at timestamptz DEFAULT now() NOT NULL,
+  name text NOT NULL,
+  phone text,
+  email text,
+  company text,
+  areas text,
+  notes text,
+  max_price numeric,
+  min_price numeric,
+  buyer_type text DEFAULT 'cash' CHECK (buyer_type IN ('cash','flipper','landlord','realtor','wholesaler','lender')),
+  prop_types jsonb DEFAULT '[]'
+);
+
+-- Money Partners
+CREATE TABLE IF NOT EXISTS public.money_partners (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at timestamptz DEFAULT now() NOT NULL,
+  name text NOT NULL,
+  company text,
+  phone text,
+  email text,
+  address text,
+  city text,
+  state text,
+  zip text,
+  mailing_address text,
+  phone2 text,
+  phone2_label text,
+  email2 text,
+  website text,
+  partner_type text,
+  partner_types jsonb DEFAULT '[]',
+  availability text DEFAULT 'active' CHECK (availability IN ('active','paused','deployed')),
+  capital_available numeric,
+  total_capital numeric,
+  min_deal_size numeric,
+  max_deal_size numeric,
+  interest_rate numeric,
+  points numeric,
+  term_length text,
+  invest_type text,
+  asset_types jsonb DEFAULT '[]',
+  asset_type_custom text,
+  locations text,
+  notes text,
+  deals jsonb DEFAULT '[]',
+  comm_log jsonb DEFAULT '[]'
+);
+
+-- Enable realtime on all tables
+ALTER PUBLICATION supabase_realtime ADD TABLE public.properties;
+ALTER PUBLICATION supabase_realtime ADD TABLE public.partners;
+ALTER PUBLICATION supabase_realtime ADD TABLE public.buyers;
+ALTER PUBLICATION supabase_realtime ADD TABLE public.money_partners;
